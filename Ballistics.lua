@@ -36,6 +36,19 @@ local BallisticsFunctions = {
     BallisticsFunctions.__index = BallisticsFunctions
     BallisticsFunctions = setmetatable(BallisticsFunctions,BallisticsFunctions)
 end
+local function GetRoot(n: number, root: number?): number
+    root = root or 2
+    local NSign = math.sign(n)
+    local NValue = math.abs(n)
+    local ValueResult = NValue^(1/root)
+    if root%2 == 1 then
+        return ValueResult*NSign
+    elseif NSign >= 0 then
+        return ValueResult
+    else
+        return tonumber("nan")
+    end
+end
 function BallisticsFunctions:SolvePolynomial(T0: number, T1: number, T2: number, T3: number, T4: number): (number, number|nil, number|nil, number|nil)
     T4 = T4 or 0
     T3 = T3 or 0
@@ -93,12 +106,12 @@ function BallisticsFunctions:SolvePolynomial(T0: number, T1: number, T2: number,
         local r = A*C/-4 + 3*A*A*A*A/256 + A*A*B/16 + D
         --The resolvent cubic is then
         --z^3 - p/2z^2 - rz + rp/2 - q^2/8 = 0
-        local z1,z2,z3 = self:SolvePolynomial(r*p/2-q*q/8,-1*r,p/-2,1) --in theory it should only be z1
+        local z1,_z2,_z3 = self:SolvePolynomial(r*p/2-q*q/8,-1*r,p/-2,1) --in theory it should only be z1
         if z1 <= 0 then
             warn("Z is 0 or negative! This doesn't seem right...",debug.traceback())
         end
         --[[
-            print(z1,z2,z3)
+            print(z1,_z2,_z3)
             if z2 or z3 then
                 warn("Unexpected z2 and/or z3 in Quartic!")
             end
@@ -133,6 +146,7 @@ function BallisticsFunctions:SolvePolynomial(T0: number, T1: number, T2: number,
         --A quartic equation, T3x^3 + T2x^2 + T1x + T0 = 0,
         --is divided by T3: x^3 + Ax^2 + Bx + C = 0
         local A,B,C = T2/T3,T1/T3,T0/T3
+        print("A:",A)
         --and substitution of x = y - A/3
         --eliminates the cubic term y^3 + 3py + 2q = 0
 
@@ -185,14 +199,19 @@ function BallisticsFunctions:SolvePolynomial(T0: number, T1: number, T2: number,
             D < 0: three different real values.
         ]]
         local y1:number?,y2:number?,y3:number?
-        if D > 1e-6 then --One root
-            local u = (-q + math.sqrt(D))^(1/3)
-            local v = (-q - math.sqrt(D))^(1/3)
+        if D >= 0 then --At least one root, potentially two
+            local SqrtD = math.sqrt(D)
+            local u = GetRoot(-1*q + SqrtD,3)
+            --print("u:",(-1*q + SqrtD),u)
+            local v = GetRoot(-1*q - SqrtD,3)
+            --print("v:",(-1*q - SqrtD),v)
             y1 = u+v
-        elseif D >= 0 then --1e-6 is essentially 0 due to float errors, two roots
-            y1 = 2*q^(1/3)
-            y2 = -(y1)/2
-        elseif D < 0 then --Three roots
+            --print("y1:",y1)
+            if D < 1e-6 then --1e-6 is essentially 0 due to float errors, two roots
+                y2 = -(y1)/2
+                --print("y2:",y2)
+            end
+        else --Three roots
             --[[
                 Messy solution:
                 u = (-q + math.sqrt(D))^(1/3)
@@ -218,13 +237,13 @@ function BallisticsFunctions:SolvePolynomial(T0: number, T1: number, T2: number,
             y3 = -2*NSqrtP*math.cos((R-math.pi)/3)
         end
         --Resubstitution yields the correct values for x.
-        if y1 ~= nil then
+        if y1 ~= nil and y1 == y1 then
             output1 = y1 - A/3
         end
-        if y2 ~= nil then
+        if y2 ~= nil and y2 == y2 then
             output2 = y2 - A/3
         end
-        if y3 ~= nil then
+        if y3 ~= nil and y3 == y3 then
             output3 = y3 - A/3
         end
         --output1,output2,output3 = y1,y2,y3
