@@ -419,7 +419,15 @@ function Utilities:CompareNumbers(N1: number, N2: number, Precision: number?): b
     local N1G = N1 + Precision/2
     return (N1L <= N2 and N2 <= N1G)
 end
-function Utilities:ProduceEstimate(Point1: number, Point2: number, ...:number)
+--[=[
+    A function that recursively calls itself to figure out where inbetween Point1 and Point2 it equals 0 within the range of Config.Precision. It performs the Bisection method to do this.
+    
+    @param Point1 -- One critical point of which should be a min/max.
+    @param Point2 -- Another critical poit of which should be a min/max.
+    @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
+    @return number -- The result of plugging in Input into the given polynomial.
+]=]
+function Utilities:ProduceEstimate(Point1: number, Point2: number, ...:number): number
     --print("Produce Estimate Between", Point1, "and", Point2, "for",...)
     local Midpoint: number
     local Point1Estimate,Point2Estimate = self:InputPolynomial(Point1,...),self:InputPolynomial(Point2,...)
@@ -485,6 +493,7 @@ function Utilities:ProduceEstimate(Point1: number, Point2: number, ...:number)
         end
     end
 end
+
 function Utilities:RemoveDuplicatesFromTable(InputTable: table)
     local output = {}
     for i=1, #InputTable do
