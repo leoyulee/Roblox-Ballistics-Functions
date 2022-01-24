@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[698],{82824:function(i){i.exports=JSON.parse('[{"type":"link","href":"/api/BallisticsFunctions","label":"\u200bBallistics\u200bFunctions"},{"type":"link","href":"/api/Config","label":"\u200bConfig"},{"type":"link","href":"/api/Utilities","label":"\u200bUtilities"}]')}}]);
