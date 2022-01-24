@@ -1,30 +1,24 @@
 --[=[
-    @class Config
-
-    The Dictionary that contains configurable information that will be used in the Utilities and BallisticsFunctions classes.
-]=]
---[=[
-    @prop Precision number
-    @within Config
-    The target precision used to compare numbers and measure simularity in [Utilities:CompareNumbers]. Set to 1e-3 (or 0.001) by default.
-]=]
---[=[
-    @prop MaxNumber number
-    @within Config
-    The MaxNumber used to replace infinity (or math.huge) during [Utilities:ProduceEstimate]. Set to 2147483646 by default.
-]=]
-local Config = {
-    Precision = 1e-3;
-    MaxNumber = 2147483646;
-}
---[=[
-    @class Utilities
+    @class BallisticUtilities
 
     The class that contains the internal processing functions to produce the right numbers for the BallisticsFunctions class. This can be accessed through BallisticsFunctions via BallisticsFunctions.Utilities.
 ]=]
-local Utilities = {} do
-    Utilities.__index = Utilities
-    Utilities = setmetatable(Utilities,Utilities)
+--[=[
+    @prop Precision number
+    @within BallisticUtilities
+    The target precision used to compare numbers and measure simularity in [BallisticUtilities:CompareNumbers]. Set to 1e-3 (or 0.001) by default.
+]=]
+--[=[
+    @prop MaxNumber number
+    @within BallisticUtilities
+    The MaxNumber used to replace infinity (or math.huge) during [BallisticUtilities:ProduceEstimate]. Set to 2147483646 by default.
+]=]
+local BallisticUtilities = {
+    Precision = 1e-3;
+    MaxNumber = 2147483646;
+} do
+    BallisticUtilities.__index = BallisticUtilities
+    BallisticUtilities = setmetatable(BallisticUtilities,BallisticUtilities)
 end
 --[=[
     A function that returns the values of coefficients required to identify the polynomials of an equation
@@ -39,7 +33,7 @@ end
     @param DeltaJerk -- The overall jerk where the shooter's at (0,0,0).
     @return number, number?, number?, number?, number?, number?, number? -- Returns the coefficients in the format of T0, T1, T2, T3, T4, T5, T6, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + T5x^5 + T6x^6 = 0
 ]=]
-function Utilities:ProduceCoefficients(ProjectileSpeed: number, DeltaPosition:Vector3, DeltaVelocity:Vector3?, DeltaAcceleration:Vector3?, DeltaJerk:Vector3?): (number, number|nil, number|nil, number|nil, number|nil, number|nil, number|nil) --https://docs.google.com/document/d/1TKhiXzLMHVjDPX3a3U0uMvaiW1jWQWUmYpICjIDeMSA/edit
+function BallisticUtilities:ProduceCoefficients(ProjectileSpeed: number, DeltaPosition:Vector3, DeltaVelocity:Vector3?, DeltaAcceleration:Vector3?, DeltaJerk:Vector3?): (number, number|nil, number|nil, number|nil, number|nil, number|nil, number|nil) --https://docs.google.com/document/d/1TKhiXzLMHVjDPX3a3U0uMvaiW1jWQWUmYpICjIDeMSA/edit
     local T0: number do
         local PSquare = DeltaPosition*DeltaPosition
         T0 = (PSquare.X+PSquare.Y+PSquare.Z)
@@ -93,7 +87,7 @@ end
     @param root -- The number of the root (n^root). By default is equal to 2.
     @return number -- Returns the result of n^root. Returns NaN if the root is even and n is negative.
 ]=]
-function Utilities:GetRoot(n: number, root: number?): number
+function BallisticUtilities:GetRoot(n: number, root: number?): number
     root = root or 2
     local NSign = math.sign(n)
     local NValue = math.abs(n)
@@ -116,7 +110,7 @@ end
     @param T4 -- The fifth coefficient of the polynomial. T4 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0
     @return number, number?, number?, number? -- Returns all possible solutions of the given polynomial, up to four solutions.
 ]=]
-function Utilities:SolvePolynomial(T0: number, T1: number, T2: number, T3: number, T4: number): (number, number|nil, number|nil, number|nil)
+function BallisticUtilities:SolvePolynomial(T0: number, T1: number, T2: number, T3: number, T4: number): (number, number|nil, number|nil, number|nil)
     T4 = T4 or 0
     T3 = T3 or 0
     T2 = T2 or 0
@@ -351,7 +345,7 @@ end
     @param Shooter -- The vector3 of the shooter. By default Vector3.new(0,0,0).
     @return Vector3 -- The resulting Vector3 of (Target - Shooter).
 ]=]
-function Utilities:ProduceDeltas(Target: Vector3?, Shooter: Vector3?): Vector3
+function BallisticUtilities:ProduceDeltas(Target: Vector3?, Shooter: Vector3?): Vector3
     if Target or Shooter then
         Target = Target or Vector3.new()
         Shooter = Shooter or Vector3.new()
@@ -364,7 +358,7 @@ end
     @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
     @return ...number -- The coefficients of the derviative polynomial from the initial polynomial.
 ]=]
-function Utilities:ProduceDerivative(...:number): ...number
+function BallisticUtilities:ProduceDerivative(...:number): ...number
     local Coefficients: Array<number> = table.pack(...)
     local NewCoefficients = {}
     for i=2, #Coefficients do --skip 1 as that'll just equal 0
@@ -381,7 +375,7 @@ end
     @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
     @return number -- The result of plugging in Input into the given polynomial.
 ]=]
-function Utilities:InputPolynomial(Input: number, ...:number): number
+function BallisticUtilities:InputPolynomial(Input: number, ...:number): number
     local Coefficients: Array<number> = table.pack(...)
     if math.abs(Input) == math.huge then
         --task.wait(0.1)
@@ -407,11 +401,11 @@ end
     
     @param N1 -- The first number.
     @param N2 -- The second number.
-    @param Precision -- The desired range of precision that the numbers should be in. This number will be divided by 2 and added/subtracted to the first number to check to see if the second number is inbetween it. By default is set to [Config.Precision].
+    @param Precision -- The desired range of precision that the numbers should be in. This number will be divided by 2 and added/subtracted to the first number to check to see if the second number is inbetween it. By default is set to [BallisticUtilities.Precision].
     @return boolean -- The result of plugging in Input into the given polynomial.
 ]=]
-function Utilities:CompareNumbers(N1: number, N2: number, Precision: number?): boolean
-    Precision = Precision or Config.Precision
+function BallisticUtilities:CompareNumbers(N1: number, N2: number, Precision: number?): boolean
+    Precision = Precision or self.Precision
     if N1 == N2 then
         return true
     end
@@ -420,14 +414,14 @@ function Utilities:CompareNumbers(N1: number, N2: number, Precision: number?): b
     return (N1L <= N2 and N2 <= N1G)
 end
 --[=[
-    A function that recursively calls itself to figure out where inbetween Point1 and Point2 it equals 0 within the range of Config.Precision. It performs the Bisection method to do this. If either point is equal to math.huge (infinity), it will replace it with [Config.MaxNumber].
+    A function that recursively calls itself to figure out where inbetween Point1 and Point2 it equals 0 within the range of [BallisticUtilities.Precision]. It performs the Bisection method to do this. If either point is equal to math.huge (infinity), it will replace it with [BallisticUtilities.MaxNumber].
     
     @param Point1 -- One critical point of which should be a min/max.
     @param Point2 -- Another critical poit of which should be a min/max.
     @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
     @return number -- The result of plugging in Input into the given polynomial.
 ]=]
-function Utilities:ProduceEstimate(Point1: number, Point2: number, ...:number): number
+function BallisticUtilities:ProduceEstimate(Point1: number, Point2: number, ...:number): number
     --print("Produce Estimate Between", Point1, "and", Point2, "for",...)
     local Midpoint: number
     local Point1Estimate,Point2Estimate = self:InputPolynomial(Point1,...),self:InputPolynomial(Point2,...)
@@ -454,12 +448,12 @@ function Utilities:ProduceEstimate(Point1: number, Point2: number, ...:number): 
         if LowerAbs ~= HigherAbs then
             if LowerAbs == math.huge then
                 --print("LowerAbs == math.huge")
-                LowerBound = -1 * Config.MaxNumber
-                Midpoint = math.sign(LowerPoint) * Config.MaxNumber
+                LowerBound = -1 * self.MaxNumber
+                Midpoint = math.sign(LowerPoint) * self.MaxNumber
             else
                 --print("HigherAbs == math.huge")
-                HigherBound = Config.MaxNumber
-                Midpoint = math.sign(HigherPoint) * Config.MaxNumber
+                HigherBound = self.MaxNumber
+                Midpoint = math.sign(HigherPoint) * self.MaxNumber
             end
         else
             Midpoint = 0
@@ -499,7 +493,7 @@ end
     @param InputArray -- The array of which should be pruned of duplicates.
     @return Array<any> -- The result of plugging in Input into the given polynomial.
 ]=]
-function Utilities:RemoveDuplicatesFromArray(InputArray: Array<any>): Array<any>
+function BallisticUtilities:RemoveDuplicatesFromArray(InputArray: Array<any>): Array<any>
     local output = {}
     for i=1, #InputArray do
         local v = InputArray[i]
@@ -517,7 +511,7 @@ end
     @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
     @return ...number -- The critical points of the given polynomial.
 ]=]
-function Utilities:ProduceCriticalPoints(...:number): ...number
+function BallisticUtilities:ProduceCriticalPoints(...:number): ...number
     print("Produce Critical Points for",...)
     local Coefficients: Array<number> = table.pack(...)
     local HighestPower = #Coefficients-1
@@ -553,7 +547,7 @@ end
     @param ... -- The coefficients of the polynomial that needs to be solved. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
     @return ...number -- The solutions of the given polynomial.
 ]=]
-function Utilities:GetEstimate(...:number): ...number
+function BallisticUtilities:GetEstimate(...:number): ...number
     local PotentialSolutions = table.pack(self:ProduceCriticalPoints(...))
     local ActualSolutions = {}
     for i=1, #PotentialSolutions do
@@ -571,12 +565,12 @@ end
     The public table that contains the functions for finding the points of collision between two projectiles.
 ]=]
 --[=[
-    @prop Utilities Utilities
+    @prop Utilities BallisticUtilities
     @within BallisticsFunctions
-    The Utilities class of which contains all of the nessessary functions used to create the right data.
+    The BallisticUtilities class of which contains all of the nessessary functions used to create the right data.
 ]=]
 local BallisticsFunctions = {
-    Utilities = Utilities;
+    Utilities = BallisticUtilities;
 } do
     BallisticsFunctions.__index = BallisticsFunctions
     BallisticsFunctions = setmetatable(BallisticsFunctions,BallisticsFunctions)
@@ -745,7 +739,7 @@ function BallisticsFunctions:GetHitTimes(ProjectileSpeed: number, ShooterPositio
     local output = table.pack(self.Utilities:SolvePolynomial(self.Utilities:ProduceCoefficients(ProjectileSpeed, DeltaPosition, DeltaVelocity, DeltaAcceleration)))
     --[[for i=1, #output do
         local OriginalOutput = output[i]
-        output[i] = math.round(OriginalOutput/Config.Precision)*Config.Precision
+        output[i] = math.round(OriginalOutput/self.Utilities.Precision)*self.Utilities.Precision
     end]]
     --print("GetHitTimes Output:",table.unpack(output))
     return table.unpack(output)
@@ -788,7 +782,7 @@ function BallisticsFunctions:GetHitTimesWithJerk(ProjectileSpeed: number, Shoote
     end
     --[[for i=1, #output do
         local OriginalOutput = output[i]
-        output[i] = math.round(OriginalOutput/Config.Precision)*Config.Precision
+        output[i] = math.round(OriginalOutput/self.Utilities.Precision)*self.Utilities.Precision
     end]]
     --print("GetHitTimes Output:",table.unpack(output))
     return table.unpack(output)
