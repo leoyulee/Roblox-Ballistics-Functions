@@ -402,7 +402,15 @@ function Utilities:InputPolynomial(Input: number, ...:number): number
     end
     return Sum
 end
-function Utilities:CompareNumbers(N1: number, N2: number, Precision: number?)
+--[=[
+    A function that returnsif two numbers are within a given range of precision.
+    
+    @param N1 -- The first number.
+    @param N2 -- The second number.
+    @param Precision -- The desired range of precision that the numbers should be in. This number will be divided by 2 and added/subtracted to the first number to check to see if the second number is inbetween it. By default Config.Precision which is by default 1e-3 (or 0.001).
+    @return boolean -- The result of plugging in Input into the given polynomial.
+]=]
+function Utilities:CompareNumbers(N1: number, N2: number, Precision: number?): boolean
     Precision = Precision or Config.Precision
     if N1 == N2 then
         return true
