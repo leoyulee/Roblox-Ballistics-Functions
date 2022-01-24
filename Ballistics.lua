@@ -581,6 +581,48 @@ local BallisticsFunctions = {
     BallisticsFunctions.__index = BallisticsFunctions
     BallisticsFunctions = setmetatable(BallisticsFunctions,BallisticsFunctions)
 end
+--[=[
+    @within BallisticsFunctions
+    @type LookVector Vector3
+    A unit Vector3 that is equivalent to CFrame.LookVector.
+]=]
+--[=[
+    @within BallisticsFunctions
+    @type AverageHitPosition Vector3
+    A Vector3 where the projectile and the target will collide.
+]=]
+--[=[
+    @within BallisticsFunctions
+    @type PositionAccuracy number
+    A number that shows how far off the average is from the projected target collision positions due to calculation incaccuracies.
+]=]
+--[=[
+    @within BallisticsFunctions
+    @type SimulatedHitPosition Vector3
+    The projected target collision position via: HitPosition = TargetInitialPosition + TargetVelocity*TravelTime + TargetAcceleration/2*TravelTime^2 + TargetJerk/3*TravelTime^3.
+]=]
+--[=[
+    @within BallisticsFunctions
+    @type ProjectedHitPosition Vector3
+    The projected projectile collision position via: HitPosition = ShooterInitialPosition + ((SimulationLookVector*ProjectileSpeed + ShooterVelocity)*TravelTime) + ShooterAcceleration/2*TravelTime^2 + ShooterJerk/3*TravelTime^3.
+]=]
+--[=[
+    @private
+    @within BallisticsFunctions
+    An internal function that computes the LookVector and HitPosition from the given results and variables.
+    
+    @param results -- An array that contains solutions from either GetHitTimes or GetHitTimesWithJerk.
+    @param ProjectileSpeed -- The initial speed of the projectile.
+    @param ShooterPosition -- The (initial) position of the projectile/shooter.
+    @param ShooterVelocity -- The (initial) velocity of the projectile/shooter.
+    @param ShooterAcceleration -- The (initial) acceleration of the projectile/shooter.
+    @param ShooterJerk -- The jerk (rate of change of acceleration) of the projectile/shooter.
+    @param TargetPosition -- The (initial) position of the target.
+    @param TargetVelocity -- The (initial) velocity of the target.
+    @param TargetAcceleration -- The (initial) velocity of the target.
+    @param TargetJerk -- The jerk (rate of change of acceleration) of the target.
+    @return LookVector?, AverageHitPosition?, PositionAccuracy?, SimulatedHitPosition?, ProjectedHitPosition? -- The LookVector, AverageHitPosition, PositionAccuracy, SimulatedHitPosition, ProjectedHitPosition. Returns nil if there isn't a valid hit direction.
+]=]
 local function ReturnHitInfo(results: Array<number>, ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, ShooterJerk: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?, TargetJerk: Vector3?): (Vector3, Vector3, number, Vector3, Vector3)
     if #results > 0 then
         --print("Hitable Check Results:", table.unpack(results))
@@ -602,7 +644,7 @@ local function ReturnHitInfo(results: Array<number>, ProjectileSpeed: number, Sh
         --print("Target Intercept Position:", ProjectedHitPosition)
         local SimulationLookVector = (ProjectedHitPosition - ShooterPosition).Unit
         --print("Simulated Look Vector to hit target:", SimulationLookVector)
-        local SimulatedNetVelocity = SimulationLookVector * ProjectileSpeed * MinimalTime + ShooterVelocity
+        local SimulatedNetVelocity = (SimulationLookVector * ProjectileSpeed + ShooterVelocity) * MinimalTime
         local SimulatedHitPosition = ShooterPosition + SimulatedNetVelocity + ShooterAcceleration * MinimalTime*MinimalTime / 2 + ShooterJerk * MinimalTime*MinimalTime*MinimalTime / 3
         --print("Simulated Hit Position:", SimulatedHitPosition)
         local AverageHitPosition = (SimulatedHitPosition + ProjectedHitPosition)/2
