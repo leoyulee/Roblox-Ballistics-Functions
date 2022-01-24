@@ -6,12 +6,12 @@
 --[=[
     @prop Precision number
     @within Config
-    The target precision used to compare numbers and measure simularity. Refer to [Utilities:CompareNumbers].
+    The target precision used to compare numbers and measure simularity in [Utilities:CompareNumbers]. Set to 1e-3 (or 0.001) by default.
 ]=]
 --[=[
     @prop MaxNumber number
     @within Config
-    The MaxNumber used to replace infinity (or math.huge) during [Utilities:ProduceEstimates].
+    The MaxNumber used to replace infinity (or math.huge) during [Utilities:ProduceEstimates]. Set to 2147483646 by default.
 ]=]
 local Config = {
     Precision = 1e-3;
@@ -375,9 +375,9 @@ function Utilities:ProduceDerivative(...:number): ...number
     return table.unpack(NewCoefficients)
 end
 --[=[
-    A function that returns the result of pluging in Input into a polynomial, given its coefficients.
+    A function that returns the result of pluging in Input into a polynomial, given its coefficients. It can also evaluate the limit of positive and negative math.huge (infinity) if the Input is set to be that.
     
-    @param Input -- The number that will be put into the given polynomial.
+    @param Input -- The number that will be put into the given polynomial. Can be math.huge (infinity).
     @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
     @return number -- The result of plugging in Input into the given polynomial.
 ]=]
@@ -407,7 +407,7 @@ end
     
     @param N1 -- The first number.
     @param N2 -- The second number.
-    @param Precision -- The desired range of precision that the numbers should be in. This number will be divided by 2 and added/subtracted to the first number to check to see if the second number is inbetween it. By default Config.Precision which is by default 1e-3 (or 0.001).
+    @param Precision -- The desired range of precision that the numbers should be in. This number will be divided by 2 and added/subtracted to the first number to check to see if the second number is inbetween it. By default is set to [Config.Precision].
     @return boolean -- The result of plugging in Input into the given polynomial.
 ]=]
 function Utilities:CompareNumbers(N1: number, N2: number, Precision: number?): boolean
@@ -420,7 +420,7 @@ function Utilities:CompareNumbers(N1: number, N2: number, Precision: number?): b
     return (N1L <= N2 and N2 <= N1G)
 end
 --[=[
-    A function that recursively calls itself to figure out where inbetween Point1 and Point2 it equals 0 within the range of Config.Precision. It performs the Bisection method to do this.
+    A function that recursively calls itself to figure out where inbetween Point1 and Point2 it equals 0 within the range of Config.Precision. It performs the Bisection method to do this. If either point is equal to math.huge (infinity), it will replace it with [Config.MaxNumber].
     
     @param Point1 -- One critical point of which should be a min/max.
     @param Point2 -- Another critical poit of which should be a min/max.
