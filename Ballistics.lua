@@ -11,7 +11,7 @@
 --[=[
     @prop MaxNumber number
     @within Config
-    The MaxNumber used to replace infinity (or math.huge) during [Utilities:ProduceEstimates]. Set to 2147483646 by default.
+    The MaxNumber used to replace infinity (or math.huge) during [Utilities:ProduceEstimate]. Set to 2147483646 by default.
 ]=]
 local Config = {
     Precision = 1e-3;
