@@ -493,11 +493,16 @@ function Utilities:ProduceEstimate(Point1: number, Point2: number, ...:number): 
         end
     end
 end
-
-function Utilities:RemoveDuplicatesFromTable(InputTable: table)
+--[=[
+    A function that creates a new array which only contains unique values.
+    
+    @param InputArray -- The array of which should be pruned of duplicates.
+    @return Array<any> -- The result of plugging in Input into the given polynomial.
+]=]
+function Utilities:RemoveDuplicatesFromArray(InputArray: Array<any>): Array<any>
     local output = {}
-    for i=1, #InputTable do
-        local v = InputTable[i]
+    for i=1, #InputArray do
+        local v = InputArray[i]
         if not table.find(output,v) then
             table.insert(output,v)
         end
@@ -511,7 +516,7 @@ function Utilities:ProduceCriticalPoints(...:number): ...number
     local CriticalPoints: Array<number>
     if HighestPower > 4 then --needs a check to see if enough solutions are given, if not, go deeper for derivatives
         local DerivativeCriticalPoints = table.pack(self:ProduceCriticalPoints(self:ProduceDerivative(...)))
-        DerivativeCriticalPoints = self:RemoveDuplicatesFromTable(DerivativeCriticalPoints)
+        DerivativeCriticalPoints = self:RemoveDuplicatesFromArray(DerivativeCriticalPoints)
         table.sort(DerivativeCriticalPoints,function(a,b)
             return a < b
         end)
