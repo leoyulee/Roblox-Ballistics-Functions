@@ -565,6 +565,16 @@ function Utilities:GetEstimate(...:number): ...number
     end
     return table.unpack(ActualSolutions,1,#ActualSolutions)
 end
+--[=[
+    @class BallisticsFunctions
+
+    The public table that contains the functions for finding the points of collision between two projectiles.
+]=]
+--[=[
+    @prop Utilities Utilities
+    @within BallisticsFunctions
+    The Utilities class of which contains all of the nessessary functions used to create the right data.
+]=]
 local BallisticsFunctions = {
     Utilities = Utilities;
 } do
