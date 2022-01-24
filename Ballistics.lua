@@ -1,4 +1,12 @@
-local function ProduceCoefficients(ProjectileSpeed: number, DeltaPosition:Vector3, DeltaVelocity:Vector3?, DeltaAcceleration:Vector3?, DeltaJerk:Vector3?): (number, number|nil, number|nil, number|nil, number|nil, number|nil, number|nil) --https://docs.google.com/document/d/1TKhiXzLMHVjDPX3a3U0uMvaiW1jWQWUmYpICjIDeMSA/edit
+local Config = {
+    Precision = 1e-3;
+    MaxNumber = 2147483646;
+}
+local Utilities = {} do
+    Utilities.__index = Utilities
+    Utilities = setmetatable(Utilities,Utilities)
+end
+function Utilities:ProduceCoefficients(ProjectileSpeed: number, DeltaPosition:Vector3, DeltaVelocity:Vector3?, DeltaAcceleration:Vector3?, DeltaJerk:Vector3?): (number, number|nil, number|nil, number|nil, number|nil, number|nil, number|nil) --https://docs.google.com/document/d/1TKhiXzLMHVjDPX3a3U0uMvaiW1jWQWUmYpICjIDeMSA/edit
     local T0: number do
         local PSquare = DeltaPosition*DeltaPosition
         T0 = (PSquare.X+PSquare.Y+PSquare.Z)
@@ -45,14 +53,7 @@ local function ProduceCoefficients(ProjectileSpeed: number, DeltaPosition:Vector
     end
     return T0
 end
-local BallisticsFunctions = {
-    Precision = 1e-3/2;
-    MaxNumber = 2147483646;
-} do
-    BallisticsFunctions.__index = BallisticsFunctions
-    BallisticsFunctions = setmetatable(BallisticsFunctions,BallisticsFunctions)
-end
-local function GetRoot(n: number, root: number?): number
+function Utilities:GetRoot(n: number, root: number?): number
     root = root or 2
     local NSign = math.sign(n)
     local NValue = math.abs(n)
@@ -65,7 +66,7 @@ local function GetRoot(n: number, root: number?): number
         return tonumber("nan")
     end
 end
-function BallisticsFunctions:SolvePolynomial(T0: number, T1: number, T2: number, T3: number, T4: number): (number, number|nil, number|nil, number|nil)
+function Utilities:SolvePolynomial(T0: number, T1: number, T2: number, T3: number, T4: number): (number, number|nil, number|nil, number|nil)
     T4 = T4 or 0
     T3 = T3 or 0
     T2 = T2 or 0
@@ -218,9 +219,9 @@ function BallisticsFunctions:SolvePolynomial(T0: number, T1: number, T2: number,
         local y1:number?,y2:number?,y3:number?
         if D >= 0 then --At least one root, potentially two
             local SqrtD = math.sqrt(D)
-            local u = GetRoot(-1*q + SqrtD,3)
+            local u = self:GetRoot(-1*q + SqrtD,3)
             --print("u:",(-1*q + SqrtD),u)
-            local v = GetRoot(-1*q - SqrtD,3)
+            local v = self:GetRoot(-1*q - SqrtD,3)
             --print("v:",(-1*q - SqrtD),v)
             y1 = u+v
             --print("y1:",y1)
@@ -293,30 +294,14 @@ function BallisticsFunctions:SolvePolynomial(T0: number, T1: number, T2: number,
     --print("SolvePolynomial Outputs:",output1,output2,output3,output4)
     return output1,output2,output3,output4
 end
-local function ProduceDeltas(Target: Vector3?, Shooter: Vector3?): Vector3
+function Utilities:ProduceDeltas(Target: Vector3?, Shooter: Vector3?): Vector3
     if Target or Shooter then
         Target = Target or Vector3.new()
         Shooter = Shooter or Vector3.new()
         return Target - Shooter
     end
 end
-function BallisticsFunctions:GetHitTimes(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?)
-    local DeltaPosition = ProduceDeltas(TargetPosition, ShooterPosition) --p
-    local DeltaVelocity = ProduceDeltas(TargetVelocity, ShooterVelocity) --v
-    local DeltaAcceleration = ProduceDeltas(TargetAcceleration, ShooterAcceleration) do --a
-        if DeltaAcceleration then
-            DeltaVelocity = DeltaVelocity or Vector3.new()
-        end
-    end
-    local output = table.pack(self:SolvePolynomial(ProduceCoefficients(ProjectileSpeed, DeltaPosition, DeltaVelocity, DeltaAcceleration)))
-    --[[for i=1, #output do
-        local OriginalOutput = output[i]
-        output[i] = math.round(OriginalOutput/self.Precision)*self.Precision
-    end]]
-    --print("GetHitTimes Output:",table.unpack(output))
-    return table.unpack(output)
-end
-function BallisticsFunctions:ProduceDerivative(...:number): ...number
+function Utilities:ProduceDerivative(...:number): ...number
     local Coefficients: Array<number> = table.pack(...)
     local NewCoefficients = {}
     for i=2, #Coefficients do --skip 1 as that'll just equal 0
@@ -326,15 +311,7 @@ function BallisticsFunctions:ProduceDerivative(...:number): ...number
     end
     return table.unpack(NewCoefficients)
 end
-function BallisticsFunctions:CompareNumbers(N1: number, N2: number)
-    if N1 == N2 then
-        return true
-    end
-    local N1L = N1 - self.Precision/2
-    local N1G = N1 + self.Precision/2
-    return (N1L <= N2 and N2 <= N1G)
-end
-local function InputPolynomial(Input: number, ...:number)
+function Utilities:InputPolynomial(Input: number, ...:number)
     local Coefficients: Array<number> = table.pack(...)
     if math.abs(Input) == math.huge then
         --task.wait(0.1)
@@ -355,10 +332,19 @@ local function InputPolynomial(Input: number, ...:number)
     end
     return Sum
 end
-function BallisticsFunctions:ProduceEstimate(Point1: number, Point2: number, ...:number)
+function Utilities:CompareNumbers(N1: number, N2: number, Precision: number?)
+    Precision = Precision or Config.Precision
+    if N1 == N2 then
+        return true
+    end
+    local N1L = N1 - Precision/2
+    local N1G = N1 + Precision/2
+    return (N1L <= N2 and N2 <= N1G)
+end
+function Utilities:ProduceEstimate(Point1: number, Point2: number, ...:number)
     --print("Produce Estimate Between", Point1, "and", Point2, "for",...)
     local Midpoint: number
-    local Point1Estimate,Point2Estimate = InputPolynomial(Point1,...),InputPolynomial(Point2,...)
+    local Point1Estimate,Point2Estimate = self:InputPolynomial(Point1,...),self:InputPolynomial(Point2,...)
     local LowerBound:number, HigherBound:number, LowerPoint:number, HigherPoint:number do
         if Point1Estimate < Point2Estimate then
             --print("Point1Estimate < Point2Estimate")
@@ -382,12 +368,12 @@ function BallisticsFunctions:ProduceEstimate(Point1: number, Point2: number, ...
         if LowerAbs ~= HigherAbs then
             if LowerAbs == math.huge then
                 --print("LowerAbs == math.huge")
-                LowerBound = -1 * self.MaxNumber
-                Midpoint = math.sign(LowerPoint) * self.MaxNumber
+                LowerBound = -1 * Config.MaxNumber
+                Midpoint = math.sign(LowerPoint) * Config.MaxNumber
             else
                 --print("HigherAbs == math.huge")
-                HigherBound = self.MaxNumber
-                Midpoint = math.sign(HigherPoint) * self.MaxNumber
+                HigherBound = Config.MaxNumber
+                Midpoint = math.sign(HigherPoint) * Config.MaxNumber
             end
         else
             Midpoint = 0
@@ -396,7 +382,7 @@ function BallisticsFunctions:ProduceEstimate(Point1: number, Point2: number, ...
         Midpoint = (Point1 + Point2)/2
     end
     --print("Midpoint:",Midpoint)
-    local CurrentEstimate = InputPolynomial(Midpoint,...)
+    local CurrentEstimate = self:InputPolynomial(Midpoint,...)
     --print("Current Estimate Ranges:",LowerBound,"-",CurrentEstimate,"-",HigherBound)
     if LowerBound > 0 and HigherBound < 0 then
         warn("No solutions that equal 0 between points",Point1,"and",Point2,"for coefficients",...,".")
@@ -421,7 +407,7 @@ function BallisticsFunctions:ProduceEstimate(Point1: number, Point2: number, ...
         end
     end
 end
-local function RemoveDuplicatesFromTable(InputTable: table)
+function Utilities:RemoveDuplicatesFromTable(InputTable: table)
     local output = {}
     for i=1, #InputTable do
         local v = InputTable[i]
@@ -431,14 +417,14 @@ local function RemoveDuplicatesFromTable(InputTable: table)
     end
     return output
 end
-function BallisticsFunctions:ProduceCriticalPoints(...:number): ...number
+function Utilities:ProduceCriticalPoints(...:number): ...number
     print("Produce Critical Points for",...)
     local Coefficients: Array<number> = table.pack(...)
     local HighestPower = #Coefficients-1
     local CriticalPoints: Array<number>
     if HighestPower > 4 then --needs a check to see if enough solutions are given, if not, go deeper for derivatives
         local DerivativeCriticalPoints = table.pack(self:ProduceCriticalPoints(self:ProduceDerivative(...)))
-        DerivativeCriticalPoints = RemoveDuplicatesFromTable(DerivativeCriticalPoints)
+        DerivativeCriticalPoints = self:RemoveDuplicatesFromTable(DerivativeCriticalPoints)
         table.sort(DerivativeCriticalPoints,function(a,b)
             return a < b
         end)
@@ -461,27 +447,116 @@ function BallisticsFunctions:ProduceCriticalPoints(...:number): ...number
     print("Critical Points for",...,":",table.unpack(CriticalPoints))
     return table.unpack(CriticalPoints,1,#CriticalPoints)
 end
-function BallisticsFunctions:GetEstimate(...:number): ...number
+function Utilities:GetEstimate(...:number): ...number
     local PotentialSolutions = table.pack(self:ProduceCriticalPoints(...))
     local ActualSolutions = {}
     for i=1, #PotentialSolutions do
         local ThisSolution = PotentialSolutions[i]
         --print(ThisSolution)
-        if self:CompareNumbers(InputPolynomial(ThisSolution,...),0) then
+        if self:CompareNumbers(self:InputPolynomial(ThisSolution,...),0) then
             table.insert(ActualSolutions, ThisSolution)
         end
     end
     return table.unpack(ActualSolutions,1,#ActualSolutions)
 end
-function BallisticsFunctions:GetHitTimesWithJerk(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, ShooterJerk: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?, TargetJerk: Vector3?)
-    local DeltaPosition = ProduceDeltas(TargetPosition, ShooterPosition) --p
-    local DeltaVelocity = ProduceDeltas(TargetVelocity, ShooterVelocity) --v
-    local DeltaAcceleration = ProduceDeltas(TargetAcceleration, ShooterAcceleration) do --a
+local BallisticsFunctions = {
+    Utilities = Utilities;
+} do
+    BallisticsFunctions.__index = BallisticsFunctions
+    BallisticsFunctions = setmetatable(BallisticsFunctions,BallisticsFunctions)
+end
+local function ReturnHitInfo(results: Array<number>, ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, ShooterJerk: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?, TargetJerk: Vector3?): (Vector3, Vector3, number, Vector3, Vector3)
+    if #results > 0 then
+        --print("Hitable Check Results:", table.unpack(results))
+        table.sort(results,function(a,b)
+            if a >= 0 then
+                if b >= 0 then
+                    return a < b
+                else
+                    return true
+                end
+            else
+                return false
+            end
+        end)
+        local MinimalTime = results[1]
+        --print("Minimal Time to hit the target:",MinimalTime)
+        assert(MinimalTime ~= nil and MinimalTime >= 0, "Minimal Time is negative or doesn't exist!")
+        local ProjectedHitPosition = TargetPosition + TargetVelocity * MinimalTime + TargetAcceleration * MinimalTime*MinimalTime / 2 + TargetJerk * MinimalTime*MinimalTime*MinimalTime / 3
+        --print("Target Intercept Position:", ProjectedHitPosition)
+        local SimulationLookVector = (ProjectedHitPosition - ShooterPosition).Unit
+        --print("Simulated Look Vector to hit target:", SimulationLookVector)
+        local SimulatedNetVelocity = SimulationLookVector * ProjectileSpeed * MinimalTime + ShooterVelocity
+        local SimulatedHitPosition = ShooterPosition + SimulatedNetVelocity + ShooterAcceleration * MinimalTime*MinimalTime / 2 + ShooterJerk * MinimalTime*MinimalTime*MinimalTime / 3
+        --print("Simulated Hit Position:", SimulatedHitPosition)
+        local AverageHitPosition = (SimulatedHitPosition + ProjectedHitPosition)/2
+        local LargestMagnitudeVector:Vector3 do
+            local ProjectedMagnitude = ProjectedHitPosition.Magnitude
+            local SimulatedMagnitude = SimulatedHitPosition.Magnitude
+            if ProjectedMagnitude > SimulatedMagnitude then
+                LargestMagnitudeVector = ProjectedHitPosition
+            else
+                LargestMagnitudeVector = SimulatedHitPosition
+            end
+        end
+        local PositionAccuracy = LargestMagnitudeVector-AverageHitPosition
+        return SimulationLookVector, AverageHitPosition, PositionAccuracy, SimulatedHitPosition, ProjectedHitPosition
+    else
+        --warn("Hitable Check failure! Not enough numbers were returned!")
+        return nil
+    end
+end
+function BallisticsFunctions:GetHitInfo(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?): (Vector3, Vector3, number, Vector3, Vector3)
+    local results = table.pack(self:GetHitTimes(ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, TargetPosition, TargetVelocity, TargetAcceleration))
+    return ReturnHitInfo(results, ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, nil, TargetPosition, TargetVelocity, TargetAcceleration, nil)
+end
+function BallisticsFunctions:GetHitInfoWithJerk(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, ShooterJerk: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?, TargetJerk: Vector3?): (Vector3, Vector3, number, Vector3, Vector3)
+    local results = table.pack(self:GetHitTimesWithJerk(ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, ShooterJerk, TargetPosition, TargetVelocity, TargetAcceleration, TargetJerk))
+    return ReturnHitInfo(results, ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, ShooterJerk, TargetPosition, TargetVelocity, TargetAcceleration, TargetJerk)
+end
+--[[function BallisticsFunctions:GetHitTimesWithDictionary(Input: Dictionary<any>)
+    local ProjectileSpeed: number? = Input.ProjectileSpeed
+    assert(type(ProjectileSpeed) == "number", "Input.ProjectileSpeed is not a number! Debug:"..debug.traceback())
+    local ConserveMomentum: boolean? = Input.ConserveMomentum or false
+    local ShooterPosition: Vector3? = Input.ShooterPosition
+    assert(typeof(ShooterPosition) == "Vector3", "Input.ShooterPosition is not a Vector3! Debug:"..debug.traceback())
+    local ShooterVelocity: Vector3?,ShooterAcceleration: Vector3?
+    if ConserveMomentum then
+        ShooterVelocity = Input.ShooterVelocity
+        ShooterAcceleration = Input.ShooterAcceleration
+    else
+        ShooterVelocity = Vector3.new()
+        ShooterAcceleration = Vector3.new()
+    end
+    local TargetPosition: Vector3? = Input.TargetPosition
+    local TargetVelocity: Vector3? = Input.TargetVelocity
+    local TargetAcceleration: Vector3? = Input.TargetAcceleration
+end]]
+function BallisticsFunctions:GetHitTimes(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?)
+    local DeltaPosition = self.Utilities:ProduceDeltas(TargetPosition, ShooterPosition) --p
+    local DeltaVelocity = self.Utilities:ProduceDeltas(TargetVelocity, ShooterVelocity) --v
+    local DeltaAcceleration = self.Utilities:ProduceDeltas(TargetAcceleration, ShooterAcceleration) do --a
         if DeltaAcceleration then
             DeltaVelocity = DeltaVelocity or Vector3.new()
         end
     end
-    local DeltaJerk = ProduceDeltas(TargetJerk, ShooterJerk) do --j
+    local output = table.pack(self.Utilities:SolvePolynomial(self.Utilities:ProduceCoefficients(ProjectileSpeed, DeltaPosition, DeltaVelocity, DeltaAcceleration)))
+    --[[for i=1, #output do
+        local OriginalOutput = output[i]
+        output[i] = math.round(OriginalOutput/Config.Precision)*Config.Precision
+    end]]
+    --print("GetHitTimes Output:",table.unpack(output))
+    return table.unpack(output)
+end
+function BallisticsFunctions:GetHitTimesWithJerk(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, ShooterJerk: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?, TargetJerk: Vector3?)
+    local DeltaPosition = self.Utilities:ProduceDeltas(TargetPosition, ShooterPosition) --p
+    local DeltaVelocity = self.Utilities:ProduceDeltas(TargetVelocity, ShooterVelocity) --v
+    local DeltaAcceleration = self.Utilities:ProduceDeltas(TargetAcceleration, ShooterAcceleration) do --a
+        if DeltaAcceleration then
+            DeltaVelocity = DeltaVelocity or Vector3.new()
+        end
+    end
+    local DeltaJerk = self.Utilities:ProduceDeltas(TargetJerk, ShooterJerk) do --j
         if DeltaJerk then
             DeltaVelocity = DeltaVelocity or Vector3.new()
             DeltaAcceleration = DeltaAcceleration or Vector3.new()
@@ -489,15 +564,15 @@ function BallisticsFunctions:GetHitTimesWithJerk(ProjectileSpeed: number, Shoote
     end
     local output do
         if DeltaJerk ~= nil then
-            --print(ProduceCoefficients(ProjectileSpeed, DeltaPosition, DeltaVelocity, DeltaAcceleration, DeltaJerk))
-            output = table.pack(self:GetEstimate(ProduceCoefficients(ProjectileSpeed, DeltaPosition, DeltaVelocity, DeltaAcceleration, DeltaJerk)))
+            --print(self.Utilities:ProduceCoefficients(ProjectileSpeed, DeltaPosition, DeltaVelocity, DeltaAcceleration, DeltaJerk))
+            output = table.pack(self.Utilities:GetEstimate(self.Utilities:ProduceCoefficients(ProjectileSpeed, DeltaPosition, DeltaVelocity, DeltaAcceleration, DeltaJerk)))
         else
-            output = table.pack(self:SolvePolynomial(ProduceCoefficients(ProjectileSpeed, DeltaPosition, DeltaVelocity, DeltaAcceleration)))
+            output = table.pack(self.Utilities:SolvePolynomial(self.Utilities:ProduceCoefficients(ProjectileSpeed, DeltaPosition, DeltaVelocity, DeltaAcceleration)))
         end
     end
     --[[for i=1, #output do
         local OriginalOutput = output[i]
-        output[i] = math.round(OriginalOutput/self.Precision)*self.Precision
+        output[i] = math.round(OriginalOutput/Config.Precision)*Config.Precision
     end]]
     --print("GetHitTimes Output:",table.unpack(output))
     return table.unpack(output)
