@@ -1,0 +1,17 @@
+title = "Roblox Ballistics Functions"  # From Git
+gitRepoUrl = "https://github.com/leoyulee/Roblox-Ballistics-Functions" # From Git
+
+gitSourceBranch = "main"
+changelog = true
+classOrder = []
+
+[docusaurus]
+onBrokenLinks = "throw"
+onBrokenMarkdownLinks = "warn"
+
+# From git:
+organizationName = "leoyulee"
+projectName = "Roblox-Ballistics-Functions"
+url = "https://leoyulee.github.io"
+baseUrl = "/"
+tagline = "A repository containing the code for a ROBLOX module that calculates ballistic information."
