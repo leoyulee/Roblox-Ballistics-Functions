@@ -2,13 +2,14 @@
   "name": "Roblox-Ballistics-Functions",
   "tree": {
     "$className": "DataModel",
-
     "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
       "Common": {
         "$path": "src"
       }
     },
     "Workspace": {
+      "$className": "Workspace",
       "$properties": {
         "FilteringEnabled": true
       },
@@ -36,6 +37,7 @@
       }
     },
     "Lighting": {
+      "$className": "Lighting",
       "$properties": {
         "Ambient": [
           0,
@@ -49,6 +51,7 @@
       }
     },
     "SoundService": {
+      "$className": "SoundService",
       "$properties": {
         "RespectFilteringEnabled": true
       }
