@@ -700,7 +700,9 @@ function BallisticsFunctions:GetHitInfoWithJerk(ProjectileSpeed: number, Shooter
     local results = table.pack(self:GetHitTimesWithJerk(ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, ShooterJerk, TargetPosition, TargetVelocity, TargetAcceleration, TargetJerk))
     return ReturnHitInfo(results, ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, ShooterJerk, TargetPosition, TargetVelocity, TargetAcceleration, TargetJerk)
 end
---[[function BallisticsFunctions:GetHitTimesWithDictionary(Input: Dictionary<any>)
+
+--[[
+function BallisticsFunctions:GetHitTimesWithDictionary(Input: Dictionary<any>)
     local ProjectileSpeed: number? = Input.ProjectileSpeed
     assert(type(ProjectileSpeed) == "number", "Input.ProjectileSpeed is not a number! Debug:"..debug.traceback())
     local ConserveMomentum: boolean? = Input.ConserveMomentum or false
@@ -717,7 +719,21 @@ end
     local TargetPosition: Vector3? = Input.TargetPosition
     local TargetVelocity: Vector3? = Input.TargetVelocity
     local TargetAcceleration: Vector3? = Input.TargetAcceleration
-end]]
+end
+]]
+
+--[=[
+    A function that computes the times of collision from ProjectileSpeed, Positions, Velocities, and Acceleration. Refer to GetHitTimesWithJerk to compute with Jerk.
+    
+    @param ProjectileSpeed -- The initial speed of the projectile.
+    @param ShooterPosition -- The (initial) position of the projectile/shooter.
+    @param ShooterVelocity -- The (initial) velocity of the projectile/shooter.
+    @param ShooterAcceleration -- The (initial) acceleration of the projectile/shooter.
+    @param TargetPosition -- The (initial) position of the target.
+    @param TargetVelocity -- The (initial) velocity of the target.
+    @param TargetAcceleration -- The (initial) velocity of the target.
+    @return ...number -- The times of when the projectile and target can collide.
+]=]
 function BallisticsFunctions:GetHitTimes(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?)
     local DeltaPosition = self.Utilities:ProduceDeltas(TargetPosition, ShooterPosition) --p
     local DeltaVelocity = self.Utilities:ProduceDeltas(TargetVelocity, ShooterVelocity) --v
@@ -734,6 +750,20 @@ function BallisticsFunctions:GetHitTimes(ProjectileSpeed: number, ShooterPositio
     --print("GetHitTimes Output:",table.unpack(output))
     return table.unpack(output)
 end
+--[=[
+    A function that computes the times of collision from ProjectileSpeed, Positions, Velocities, Acceleration, and Jerk.
+    
+    @param ProjectileSpeed -- The initial speed of the projectile.
+    @param ShooterPosition -- The (initial) position of the projectile/shooter.
+    @param ShooterVelocity -- The (initial) velocity of the projectile/shooter.
+    @param ShooterAcceleration -- The (initial) acceleration of the projectile/shooter.
+    @param ShooterJerk -- The jerk (rate of change of acceleration) of the projectile/shooter.
+    @param TargetPosition -- The (initial) position of the target.
+    @param TargetVelocity -- The (initial) velocity of the target.
+    @param TargetAcceleration -- The (initial) velocity of the target.
+    @param TargetJerk -- The jerk (rate of change of acceleration) of the target.
+    @return ...number -- The times of when the projectile and target can collide.
+]=]
 function BallisticsFunctions:GetHitTimesWithJerk(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, ShooterJerk: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?, TargetJerk: Vector3?)
     local DeltaPosition = self.Utilities:ProduceDeltas(TargetPosition, ShooterPosition) --p
     local DeltaVelocity = self.Utilities:ProduceDeltas(TargetVelocity, ShooterVelocity) --v
