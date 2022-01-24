@@ -547,6 +547,12 @@ function Utilities:ProduceCriticalPoints(...:number): ...number
     print("Critical Points for",...,":",table.unpack(CriticalPoints))
     return table.unpack(CriticalPoints,1,#CriticalPoints)
 end
+--[=[
+    A function that finds and returns the solutions to the inputted polynomial which doesn't have a general formula with critical points and the bisection method.
+    
+    @param ... -- The coefficients of the polynomial that needs to be solved. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
+    @return ...number -- The solutions of the given polynomial.
+]=]
 function Utilities:GetEstimate(...:number): ...number
     local PotentialSolutions = table.pack(self:ProduceCriticalPoints(...))
     local ActualSolutions = {}
