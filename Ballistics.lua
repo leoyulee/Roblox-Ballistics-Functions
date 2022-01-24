@@ -6,12 +6,12 @@
 --[=[
     @prop Precision number
     @within Config
-    The target precision used to compare numbers and measure simularity. Refer to function CompareNumbers.
+    The target precision used to compare numbers and measure simularity. Refer to [Utilities:CompareNumbers].
 ]=]
 --[=[
     @prop MaxNumber number
     @within Config
-    The MaxNumber used to replace infinity (or math.huge) during 
+    The MaxNumber used to replace infinity (or math.huge) during [Utilities:ProduceEstimates].
 ]=]
 local Config = {
     Precision = 1e-3;
@@ -666,7 +666,7 @@ local function ReturnHitInfo(results: Array<number>, ProjectileSpeed: number, Sh
 end
 --[=[
     @tag Untested
-    A function that computes the LookVector and HitPosition from ProjectileSpeed, Positions, Velocities, and Acceleration. Refer to GetHitInfoWithJerk to compute with Jerk.
+    A function that computes the LookVector and HitPosition from ProjectileSpeed, Positions, Velocities, and Acceleration. Refer to [BallisticsFunctions:GetHitInfoWithJerk] to compute with Jerk.
     
     @param ProjectileSpeed -- The initial speed of the projectile.
     @param ShooterPosition -- The (initial) position of the projectile/shooter.
@@ -723,7 +723,7 @@ end
 ]]
 
 --[=[
-    A function that computes the times of collision from ProjectileSpeed, Positions, Velocities, and Acceleration. Refer to GetHitTimesWithJerk to compute with Jerk.
+    A function that computes the times of collision from ProjectileSpeed, Positions, Velocities, and Acceleration. Refer to [BallisticsFunctions:GetHitTimesWithJerk] to compute with Jerk.
     
     @param ProjectileSpeed -- The initial speed of the projectile.
     @param ShooterPosition -- The (initial) position of the projectile/shooter.
