@@ -1,11 +1,44 @@
+--[=[
+    @class Config
+
+    The Dictionary that contains configurable information that will be used in the Utilities and BallisticsFunctions classes.
+]=]
+--[=[
+    @prop Precision number
+    @within Config
+    The target precision used to compare numbers and measure simularity. Refer to function CompareNumbers.
+]=]
+--[=[
+    @prop MaxNumber number
+    @within Config
+    The MaxNumber used to replace infinity (or math.huge) during 
+]=]
 local Config = {
     Precision = 1e-3;
     MaxNumber = 2147483646;
 }
+--[=[
+    @class Utilities
+
+    The class that contains the internal processing functions to produce the right numbers for the BallisticsFunctions class. This can be accessed through BallisticsFunctions via BallisticsFunctions.Utilities.
+]=]
 local Utilities = {} do
     Utilities.__index = Utilities
     Utilities = setmetatable(Utilities,Utilities)
 end
+--[=[
+    A function that returns the values of coefficients required to identify the polynomials of an equation
+    and find the solutions to said polynomials.
+    
+    Process found here: https://docs.google.com/document/d/1TKhiXzLMHVjDPX3a3U0uMvaiW1jWQWUmYpICjIDeMSA/edit
+    
+    @param ProjectileSpeed -- The speed that the projectile will have when fired.
+    @param DeltaPosition -- The overall position where the shooter's at (0,0,0).
+    @param DeltaVelocity -- The overall velocity where the shooter's at (0,0,0).
+    @param DeltaAcceleration -- The overall acceleration where the shooter's at (0,0,0).
+    @param DeltaJerk -- The overall jerk where the shooter's at (0,0,0).
+    @return number, number?, number?, number?, number?, number?, number? -- Returns the coefficients in the format of T0, T1, T2, T3, T4, T5, T6, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + T5x^5 + T6x^6 = 0
+]=]
 function Utilities:ProduceCoefficients(ProjectileSpeed: number, DeltaPosition:Vector3, DeltaVelocity:Vector3?, DeltaAcceleration:Vector3?, DeltaJerk:Vector3?): (number, number|nil, number|nil, number|nil, number|nil, number|nil, number|nil) --https://docs.google.com/document/d/1TKhiXzLMHVjDPX3a3U0uMvaiW1jWQWUmYpICjIDeMSA/edit
     local T0: number do
         local PSquare = DeltaPosition*DeltaPosition
@@ -53,6 +86,13 @@ function Utilities:ProduceCoefficients(ProjectileSpeed: number, DeltaPosition:Ve
     end
     return T0
 end
+--[=[
+    A workaround function to address how odd roots of a negative returns NaN when they should be returning a negative odd-rooted number.
+    
+    @param n -- The number of which the root will be applied to (n^root).
+    @param root -- The number of the root (n^root). By default is equal to 2.
+    @return number -- Returns the result of n^root. Returns NaN if the root is even and n is negative.
+]=]
 function Utilities:GetRoot(n: number, root: number?): number
     root = root or 2
     local NSign = math.sign(n)
@@ -66,6 +106,16 @@ function Utilities:GetRoot(n: number, root: number?): number
         return tonumber("nan")
     end
 end
+--[=[
+    A function that solves a polynomial given its coefficients up to the fourth power (T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0).
+    
+    @param T0 -- The first coefficient of the polynomial. T0 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0
+    @param T1 -- The second coefficient of the polynomial. T1 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0
+    @param T2 -- The third coefficient of the polynomial. T2 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0
+    @param T3 -- The fourth coefficient of the polynomial. T3 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0
+    @param T4 -- The fifth coefficient of the polynomial. T4 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0
+    @return number, number?, number?, number? -- Returns all possible solutions of the given polynomial, up to four solutions.
+]=]
 function Utilities:SolvePolynomial(T0: number, T1: number, T2: number, T3: number, T4: number): (number, number|nil, number|nil, number|nil)
     T4 = T4 or 0
     T3 = T3 or 0
@@ -294,6 +344,13 @@ function Utilities:SolvePolynomial(T0: number, T1: number, T2: number, T3: numbe
     --print("SolvePolynomial Outputs:",output1,output2,output3,output4)
     return output1,output2,output3,output4
 end
+--[=[
+    A short function that finds the overall vector between two Vector3s (Final Vector - Initial Vector).
+    
+    @param Target -- The vector3 of the target. By default Vector3.new(0,0,0).
+    @param Shooter -- The vector3 of the shooter. By default Vector3.new(0,0,0).
+    @return Vector3 -- The resulting Vector3 of (Target - Shooter).
+]=]
 function Utilities:ProduceDeltas(Target: Vector3?, Shooter: Vector3?): Vector3
     if Target or Shooter then
         Target = Target or Vector3.new()
@@ -301,6 +358,12 @@ function Utilities:ProduceDeltas(Target: Vector3?, Shooter: Vector3?): Vector3
         return Target - Shooter
     end
 end
+--[=[
+    A function that returns the derivative of a polynomial, given its coefficients.
+    
+    @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
+    @return ... -- The coefficients of the derviative polynomial from the initial polynomial.
+]=]
 function Utilities:ProduceDerivative(...:number): ...number
     local Coefficients: Array<number> = table.pack(...)
     local NewCoefficients = {}
@@ -311,7 +374,14 @@ function Utilities:ProduceDerivative(...:number): ...number
     end
     return table.unpack(NewCoefficients)
 end
-function Utilities:InputPolynomial(Input: number, ...:number)
+--[=[
+    A function that returns the result of pluging in Input into a polynomial, given its coefficients.
+    
+    @param Input -- The number that will be put into the given polynomial.
+    @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
+    @return number -- The result of plugging in Input into the given polynomial.
+]=]
+function Utilities:InputPolynomial(Input: number, ...:number): number
     local Coefficients: Array<number> = table.pack(...)
     if math.abs(Input) == math.huge then
         --task.wait(0.1)
