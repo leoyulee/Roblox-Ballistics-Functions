@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="generator" content="Docusaurus v2.0.0-beta.9">
+<title data-react-helmet="true">Utilities | Roblox Ballistics Functions</title><meta data-react-helmet="true" property="og:title" content="Utilities | Roblox Ballistics Functions"><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="description" content="The class that contains the internal processing functions to produce the right numbers for the BallisticsFunctions class. This can be accessed through BallisticsFunctions via BallisticsFunctions.Utilities."><meta data-react-helmet="true" property="og:description" content="The class that contains the internal processing functions to produce the right numbers for the BallisticsFunctions class. This can be accessed through BallisticsFunctions via BallisticsFunctions.Utilities."><meta data-react-helmet="true" property="og:url" content="https://leoyulee.github.io/Roblox-Ballistics-Functions/api/Utilities"><meta data-react-helmet="true" name="docusaurus_locale" content="en"><meta data-react-helmet="true" name="docusaurus_tag" content="default"><link data-react-helmet="true" rel="canonical" href="https://leoyulee.github.io/Roblox-Ballistics-Functions/api/Utilities"><link data-react-helmet="true" rel="alternate" href="https://leoyulee.github.io/Roblox-Ballistics-Functions/api/Utilities" hreflang="en"><link data-react-helmet="true" rel="alternate" href="https://leoyulee.github.io/Roblox-Ballistics-Functions/api/Utilities" hreflang="x-default"><link rel="stylesheet" href="/Roblox-Ballistics-Functions/assets/css/styles.06f234af.css">
+<link rel="preload" href="/Roblox-Ballistics-Functions/assets/js/runtime~main.b4554b66.js" as="script">
+<link rel="preload" href="/Roblox-Ballistics-Functions/assets/js/main.1fffa04e.js" as="script">
+</head>
+<body>
+<script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
+<div><a href="#" class="skipToContent_1oUP">Skip to main content</a></div><nav class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Navigation bar toggle" class="navbar__toggle clean-btn" type="button" tabindex="0"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/Roblox-Ballistics-Functions/"><b class="navbar__title">Roblox Ballistics Functions</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/Roblox-Ballistics-Functions/api/">API</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/leoyulee/Roblox-Ballistics-Functions" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link"><span>GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_3J9K"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><div class="toggle_71bT toggle_3Zt9 toggleDisabled_3cF-"><div class="toggleTrack_32Fl" role="button" tabindex="-1"><div class="toggleTrackCheck_3lV7"><span class="toggleIcon_O4iE">🌜</span></div><div class="toggleTrackX_S2yS"><span class="toggleIcon_O4iE">🌞</span></div><div class="toggleTrackThumb_xI_Z"></div></div><input type="checkbox" class="toggleScreenReader_28Tw" aria-label="Switch between dark and light mode"></div><div class="navbar__search"><span aria-label="expand searchbar" role="button" class="search-icon" tabindex="0"></span><input type="search" id="search_input_react" placeholder="Press S to Search..." aria-label="Search" class="navbar__search-input search-bar"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div class="main-wrapper docPageContainer_2Kz0"><div class="docPage_1bdk"><div class="docSidebarContainer_1ykS"><div class="sidebar_15mo"><nav class="menu thin-scrollbar menu_Bmed"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/Roblox-Ballistics-Functions/api/BallisticsFunctions">​Ballistics​Functions</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/Roblox-Ballistics-Functions/api/Config">​Config</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" href="/Roblox-Ballistics-Functions/api/Utilities">​Utilities</a></li></ul></nav><button type="button" title="Collapse sidebar" aria-label="Collapse sidebar" class="button button--secondary button--outline collapseSidebarButton_1CGd"><svg width="20" height="20" aria-hidden="true" class="collapseSidebarButtonIcon_3E-R"><g fill="#7a7a7a"><path d="M9.992 10.023c0 .2-.062.399-.172.547l-4.996 7.492a.982.982 0 01-.828.454H1c-.55 0-1-.453-1-1 0-.2.059-.403.168-.551l4.629-6.942L.168 3.078A.939.939 0 010 2.528c0-.548.45-.997 1-.997h2.996c.352 0 .649.18.828.45L9.82 9.472c.11.148.172.347.172.55zm0 0"></path><path d="M19.98 10.023c0 .2-.058.399-.168.547l-4.996 7.492a.987.987 0 01-.828.454h-3c-.547 0-.996-.453-.996-1 0-.2.059-.403.168-.551l4.625-6.942-4.625-6.945a.939.939 0 01-.168-.55 1 1 0 01.996-.997h3c.348 0 .649.18.828.45l4.996 7.492c.11.148.168.347.168.55zm0 0"></path></g></svg></button></div></div><main class="docMainContainer_28N5"><div class="container padding-vert--lg"><div class="row"><div class="col docItemCol_3WPG"><div class="docItemContainer_3XDu"><article><div class="member_qHIL markdown"><div class="tocCollapsible_1PrD theme-doc-toc-mobile tocMobile_3ryM"><button type="button" class="clean-btn tocCollapsibleButton_2O1e">On this page</button></div><header><h1 class="docTitle_1ddc" style="text-decoration:none"><span style="display:inline-block">Utilities</span></h1><div class="luaClassTags_2Zrs"></div><div>
+<p>The class that contains the internal processing functions to produce the right numbers for the BallisticsFunctions class. This can be accessed through BallisticsFunctions via BallisticsFunctions.Utilities.</p>
+</div></header><h2 class="anchor anchorWithStickyNavbar_31ik" id="functions">Functions<a aria-hidden="true" class="hash-link" href="#functions" title="Direct link to heading">​</a></h2><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="ProduceCoefficients"><code style="text-decoration:none">ProduceCoefficients</code><a aria-hidden="true" class="hash-link" href="#ProduceCoefficients" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L42"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">ProduceCoefficients</code><code>(</code><div class="inset_2cJr"><div><code>ProjectileSpeed<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The speed that the projectile will have when fired.</p>
+</span></span></div><div><code>DeltaPosition<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The overall position where the shooter's at (0,0,0).</p>
+</span></span></div><div><code>DeltaVelocity<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3?<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The overall velocity where the shooter's at (0,0,0).</p>
+</span></span></div><div><code>DeltaAcceleration<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3?<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The overall acceleration where the shooter's at (0,0,0).</p>
+</span></span></div><div><code>DeltaJerk<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3?<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><span class="inlineDescription_17uy">-- <span>
+<p>The overall jerk where the shooter's at (0,0,0).</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">number,</code><code class="blue_2Afy">number?,</code><code class="blue_2Afy">number?,</code><code class="blue_2Afy">number?,</code><code class="blue_2Afy">number?,</code><code class="blue_2Afy">number?,</code><code class="blue_2Afy">number?</code><span class="inlineDescription_17uy">-- <span>
+<p>Returns the coefficients in the format of T0, T1, T2, T3, T4, T5, T6, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + T5x^5 + T6x^6 = 0</p>
+</span></span></div><div>
+<p>
+  A function that returns the values of coefficients required to identify the polynomials of an equation
+  and find the solutions to said polynomials.
+</p>
+<p>Process found here: <a href="https://docs.google.com/document/d/1TKhiXzLMHVjDPX3a3U0uMvaiW1jWQWUmYpICjIDeMSA/edit" target="_blank">https://docs.google.com/document/d/1TKhiXzLMHVjDPX3a3U0uMvaiW1jWQWUmYpICjIDeMSA/edit</a></p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="GetRoot"><code style="text-decoration:none">GetRoot</code><a aria-hidden="true" class="hash-link" href="#GetRoot" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L96"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">GetRoot</code><code>(</code><div class="inset_2cJr"><div><code>n<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The number of which the root will be applied to (n^root).</p>
+</span></span></div><div><code>root<!-- -->: </code><code class="blue_2Afy">number?</code><span class="inlineDescription_17uy">-- <span>
+<p>The number of the root (n^root). By default is equal to 2.</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>Returns the result of n^root. Returns NaN if the root is even and n is negative.</p>
+</span></span></div><div>
+<p>A workaround function to address how odd roots of a negative returns NaN when they should be returning a negative odd-rooted number.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="SolvePolynomial"><code style="text-decoration:none">SolvePolynomial</code><a aria-hidden="true" class="hash-link" href="#SolvePolynomial" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L119"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">SolvePolynomial</code><code>(</code><div class="inset_2cJr"><div><code>T0<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The first coefficient of the polynomial. T0 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0</p>
+</span></span></div><div><code>T1<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The second coefficient of the polynomial. T1 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0</p>
+</span></span></div><div><code>T2<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The third coefficient of the polynomial. T2 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0</p>
+</span></span></div><div><code>T3<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The fourth coefficient of the polynomial. T3 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0</p>
+</span></span></div><div><code>T4<!-- -->: </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>The fifth coefficient of the polynomial. T4 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">number,</code><code class="blue_2Afy">number?,</code><code class="blue_2Afy">number?,</code><code class="blue_2Afy">number?</code><span class="inlineDescription_17uy">-- <span>
+<p>Returns all possible solutions of the given polynomial, up to four solutions.</p>
+</span></span></div><div>
+<p>A function that solves a polynomial given its coefficients up to the fourth power (T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0).</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="ProduceDeltas"><code style="text-decoration:none">ProduceDeltas</code><a aria-hidden="true" class="hash-link" href="#ProduceDeltas" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L354"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">ProduceDeltas</code><code>(</code><div class="inset_2cJr"><div><code>Target<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3?<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The vector3 of the target. By default Vector3.new(0,0,0).</p>
+</span></span></div><div><code>Shooter<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3?<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><span class="inlineDescription_17uy">-- <span>
+<p>The vector3 of the shooter. By default Vector3.new(0,0,0).</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><span class="inlineDescription_17uy">-- <span>
+<p>The resulting Vector3 of (Target - Shooter).</p>
+</span></span></div><div>
+<p>A short function that finds the overall vector between two Vector3s (Final Vector - Initial Vector).</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="ProduceDerivative"><code style="text-decoration:none">ProduceDerivative</code><a aria-hidden="true" class="hash-link" href="#ProduceDerivative" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L367"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">ProduceDerivative</code><code>(</code><div class="inset_2cJr"><div><code>...<!-- -->: </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">...number</code><span class="inlineDescription_17uy">-- <span>
+<p>The coefficients of the derviative polynomial from the initial polynomial.</p>
+</span></span></div><div>
+<p>A function that returns the derivative of a polynomial, given its coefficients.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="InputPolynomial"><code style="text-decoration:none">InputPolynomial</code><a aria-hidden="true" class="hash-link" href="#InputPolynomial" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L384"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">InputPolynomial</code><code>(</code><div class="inset_2cJr"><div><code>Input<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The number that will be put into the given polynomial. Can be math.huge (infinity).</p>
+</span></span></div><div><code>...<!-- -->: </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>The result of plugging in Input into the given polynomial.</p>
+</span></span></div><div>
+<p>A function that returns the result of pluging in Input into a polynomial, given its coefficients. It can also evaluate the limit of positive and negative math.huge (infinity) if the Input is set to be that.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="CompareNumbers"><code style="text-decoration:none">CompareNumbers</code><a aria-hidden="true" class="hash-link" href="#CompareNumbers" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L413"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">CompareNumbers</code><code>(</code><div class="inset_2cJr"><div><code>N1<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The first number.</p>
+</span></span></div><div><code>N2<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The second number.</p>
+</span></span></div><div><code>Precision<!-- -->: </code><code class="blue_2Afy">number?</code><span class="inlineDescription_17uy">-- <span>
+<p>The desired range of precision that the numbers should be in. This number will be divided by 2 and added/subtracted to the first number to check to see if the second number is inbetween it. By default is set to <a href="/Roblox-Ballistics-Functions/api/Config#Precision">Config.Precision</a>.</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">boolean</code><span class="inlineDescription_17uy">-- <span>
+<p>The result of plugging in Input into the given polynomial.</p>
+</span></span></div><div>
+<p>A function that returnsif two numbers are within a given range of precision.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="ProduceEstimate"><code style="text-decoration:none">ProduceEstimate</code><a aria-hidden="true" class="hash-link" href="#ProduceEstimate" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L430"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">ProduceEstimate</code><code>(</code><div class="inset_2cJr"><div><code>Point1<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>One critical point of which should be a min/max.</p>
+</span></span></div><div><code>Point2<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>Another critical poit of which should be a min/max.</p>
+</span></span></div><div><code>...<!-- -->: </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>The result of plugging in Input into the given polynomial.</p>
+</span></span></div><div>
+<p>A function that recursively calls itself to figure out where inbetween Point1 and Point2 it equals 0 within the range of Config.Precision. It performs the Bisection method to do this. If either point is equal to math.huge (infinity), it will replace it with <a href="/Roblox-Ballistics-Functions/api/Config#MaxNumber">Config.MaxNumber</a>.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="RemoveDuplicatesFromArray"><code style="text-decoration:none">RemoveDuplicatesFromArray</code><a aria-hidden="true" class="hash-link" href="#RemoveDuplicatesFromArray" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L502"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">RemoveDuplicatesFromArray</code><code>(</code><div class="inset_2cJr"><div><code>InputArray<!-- -->: </code><code class="blue_2Afy">Array</code><code class="op_1JtD">&lt;</code><code class="blue_2Afy">any</code><code class="op_1JtD">&gt;</code><span class="inlineDescription_17uy">-- <span>
+<p>The array of which should be pruned of duplicates.</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">Array</code><code class="op_1JtD">&lt;</code><code class="blue_2Afy">any</code><code class="op_1JtD">&gt;</code><span class="inlineDescription_17uy">-- <span>
+<p>The result of plugging in Input into the given polynomial.</p>
+</span></span></div><div>
+<p>A function that creates a new array which only contains unique values.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="ProduceCriticalPoints"><code style="text-decoration:none">ProduceCriticalPoints</code><a aria-hidden="true" class="hash-link" href="#ProduceCriticalPoints" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L520"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">ProduceCriticalPoints</code><code>(</code><div class="inset_2cJr"><div><code>...<!-- -->: </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">...number</code><span class="inlineDescription_17uy">-- <span>
+<p>The critical points of the given polynomial.</p>
+</span></span></div><div>
+<p>
+  A function that finds and returns the values where a relative/absolute max/min occurs in the polynomial.
+  If the polynomial is a quartic or lower, it will use the general formula in SolvePolynomial.
+  Otherwise, it will perform the bisection method via ProduceEstimate.
+</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="GetEstimate"><code style="text-decoration:none">GetEstimate</code><a aria-hidden="true" class="hash-link" href="#GetEstimate" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/leoyulee/Roblox-Ballistics-Functions/blob/main/src/Ballistics.lua#L556"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Utilities<!-- -->:</code><code class="green_3LnD">GetEstimate</code><code>(</code><div class="inset_2cJr"><div><code>...<!-- -->: </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>The coefficients of the polynomial that needs to be solved. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">...number</code><span class="inlineDescription_17uy">-- <span>
+<p>The solutions of the given polynomial.</p>
+</span></span></div><div>
+<p>A function that finds and returns the solutions to the inputted polynomial which doesn't have a general formula with critical points and the bisection method.</p>
+</div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
+    &quot;functions&quot;: [
+        {
+            &quot;name&quot;: &quot;ProduceCoefficients&quot;,
+            &quot;desc&quot;: &quot;A function that returns the values of coefficients required to identify the polynomials of an equation\nand find the solutions to said polynomials.\n\nProcess found here: https://docs.google.com/document/d/1TKhiXzLMHVjDPX3a3U0uMvaiW1jWQWUmYpICjIDeMSA/edit&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;ProjectileSpeed&quot;,
+                    &quot;desc&quot;: &quot;The speed that the projectile will have when fired.&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;DeltaPosition&quot;,
+                    &quot;desc&quot;: &quot;The overall position where the shooter&#x27;s at (0,0,0).&quot;,
+                    &quot;lua_type&quot;: &quot;Vector3&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;DeltaVelocity&quot;,
+                    &quot;desc&quot;: &quot;The overall velocity where the shooter&#x27;s at (0,0,0).&quot;,
+                    &quot;lua_type&quot;: &quot;Vector3?&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;DeltaAcceleration&quot;,
+                    &quot;desc&quot;: &quot;The overall acceleration where the shooter&#x27;s at (0,0,0).&quot;,
+                    &quot;lua_type&quot;: &quot;Vector3?&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;DeltaJerk&quot;,
+                    &quot;desc&quot;: &quot;The overall jerk where the shooter&#x27;s at (0,0,0).&quot;,
+                    &quot;lua_type&quot;: &quot;Vector3?&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;Returns the coefficients in the format of T0, T1, T2, T3, T4, T5, T6, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + T5x^5 + T6x^6 = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number, number?, number?, number?, number?, number?, number?&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 42,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;GetRoot&quot;,
+            &quot;desc&quot;: &quot;A workaround function to address how odd roots of a negative returns NaN when they should be returning a negative odd-rooted number.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;n&quot;,
+                    &quot;desc&quot;: &quot;The number of which the root will be applied to (n^root).&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;root&quot;,
+                    &quot;desc&quot;: &quot;The number of the root (n^root). By default is equal to 2.&quot;,
+                    &quot;lua_type&quot;: &quot;number?&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;Returns the result of n^root. Returns NaN if the root is even and n is negative.&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 96,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;SolvePolynomial&quot;,
+            &quot;desc&quot;: &quot;A function that solves a polynomial given its coefficients up to the fourth power (T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0).&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;T0&quot;,
+                    &quot;desc&quot;: &quot;The first coefficient of the polynomial. T0 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;T1&quot;,
+                    &quot;desc&quot;: &quot;The second coefficient of the polynomial. T1 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;T2&quot;,
+                    &quot;desc&quot;: &quot;The third coefficient of the polynomial. T2 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;T3&quot;,
+                    &quot;desc&quot;: &quot;The fourth coefficient of the polynomial. T3 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;T4&quot;,
+                    &quot;desc&quot;: &quot;The fifth coefficient of the polynomial. T4 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;Returns all possible solutions of the given polynomial, up to four solutions.&quot;,
+                    &quot;lua_type&quot;: &quot;number, number?, number?, number?&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 119,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;ProduceDeltas&quot;,
+            &quot;desc&quot;: &quot;A short function that finds the overall vector between two Vector3s (Final Vector - Initial Vector).&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Target&quot;,
+                    &quot;desc&quot;: &quot;The vector3 of the target. By default Vector3.new(0,0,0).&quot;,
+                    &quot;lua_type&quot;: &quot;Vector3?&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;Shooter&quot;,
+                    &quot;desc&quot;: &quot;The vector3 of the shooter. By default Vector3.new(0,0,0).&quot;,
+                    &quot;lua_type&quot;: &quot;Vector3?&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The resulting Vector3 of (Target - Shooter).&quot;,
+                    &quot;lua_type&quot;: &quot;Vector3&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 354,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;ProduceDerivative&quot;,
+            &quot;desc&quot;: &quot;A function that returns the derivative of a polynomial, given its coefficients.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;...&quot;,
+                    &quot;desc&quot;: &quot;The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The coefficients of the derviative polynomial from the initial polynomial.&quot;,
+                    &quot;lua_type&quot;: &quot;...number&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 367,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;InputPolynomial&quot;,
+            &quot;desc&quot;: &quot;A function that returns the result of pluging in Input into a polynomial, given its coefficients. It can also evaluate the limit of positive and negative math.huge (infinity) if the Input is set to be that.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Input&quot;,
+                    &quot;desc&quot;: &quot;The number that will be put into the given polynomial. Can be math.huge (infinity).&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;...&quot;,
+                    &quot;desc&quot;: &quot;The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The result of plugging in Input into the given polynomial.&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 384,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;CompareNumbers&quot;,
+            &quot;desc&quot;: &quot;A function that returnsif two numbers are within a given range of precision.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;N1&quot;,
+                    &quot;desc&quot;: &quot;The first number.&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;N2&quot;,
+                    &quot;desc&quot;: &quot;The second number.&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;Precision&quot;,
+                    &quot;desc&quot;: &quot;The desired range of precision that the numbers should be in. This number will be divided by 2 and added/subtracted to the first number to check to see if the second number is inbetween it. By default is set to [Config.Precision].&quot;,
+                    &quot;lua_type&quot;: &quot;number?&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The result of plugging in Input into the given polynomial.&quot;,
+                    &quot;lua_type&quot;: &quot;boolean&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 413,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;ProduceEstimate&quot;,
+            &quot;desc&quot;: &quot;A function that recursively calls itself to figure out where inbetween Point1 and Point2 it equals 0 within the range of Config.Precision. It performs the Bisection method to do this. If either point is equal to math.huge (infinity), it will replace it with [Config.MaxNumber].&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Point1&quot;,
+                    &quot;desc&quot;: &quot;One critical point of which should be a min/max.&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;Point2&quot;,
+                    &quot;desc&quot;: &quot;Another critical poit of which should be a min/max.&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;...&quot;,
+                    &quot;desc&quot;: &quot;The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The result of plugging in Input into the given polynomial.&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 430,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;RemoveDuplicatesFromArray&quot;,
+            &quot;desc&quot;: &quot;A function that creates a new array which only contains unique values.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;InputArray&quot;,
+                    &quot;desc&quot;: &quot;The array of which should be pruned of duplicates.&quot;,
+                    &quot;lua_type&quot;: &quot;Array&lt;any&gt;&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The result of plugging in Input into the given polynomial.&quot;,
+                    &quot;lua_type&quot;: &quot;Array&lt;any&gt;&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 502,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;ProduceCriticalPoints&quot;,
+            &quot;desc&quot;: &quot;A function that finds and returns the values where a relative/absolute max/min occurs in the polynomial.\nIf the polynomial is a quartic or lower, it will use the general formula in SolvePolynomial.\nOtherwise, it will perform the bisection method via ProduceEstimate.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;...&quot;,
+                    &quot;desc&quot;: &quot;The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The critical points of the given polynomial.&quot;,
+                    &quot;lua_type&quot;: &quot;...number&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 520,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;GetEstimate&quot;,
+            &quot;desc&quot;: &quot;A function that finds and returns the solutions to the inputted polynomial which doesn&#x27;t have a general formula with critical points and the bisection method.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;...&quot;,
+                    &quot;desc&quot;: &quot;The coefficients of the polynomial that needs to be solved. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The solutions of the given polynomial.&quot;,
+                    &quot;lua_type&quot;: &quot;...number&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 556,
+                &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+            }
+        }
+    ],
+    &quot;properties&quot;: [],
+    &quot;types&quot;: [],
+    &quot;name&quot;: &quot;Utilities&quot;,
+    &quot;desc&quot;: &quot;The class that contains the internal processing functions to produce the right numbers for the BallisticsFunctions class. This can be accessed through BallisticsFunctions via BallisticsFunctions.Utilities.&quot;,
+    &quot;source&quot;: {
+        &quot;line&quot;: 25,
+        &quot;path&quot;: &quot;src/Ballistics.lua&quot;
+    }
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_35-E thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#CompareNumbers" class="table-of-contents__link toc-highlight">:CompareNumbers</a></li><li><a href="#GetEstimate" class="table-of-contents__link toc-highlight">:GetEstimate</a></li><li><a href="#GetRoot" class="table-of-contents__link toc-highlight">:GetRoot</a></li><li><a href="#InputPolynomial" class="table-of-contents__link toc-highlight">:InputPolynomial</a></li><li><a href="#ProduceCoefficients" class="table-of-contents__link toc-highlight">:ProduceCoefficients</a></li><li><a href="#ProduceCriticalPoints" class="table-of-contents__link toc-highlight">:ProduceCriticalPoints</a></li><li><a href="#ProduceDeltas" class="table-of-contents__link toc-highlight">:ProduceDeltas</a></li><li><a href="#ProduceDerivative" class="table-of-contents__link toc-highlight">:ProduceDerivative</a></li><li><a href="#ProduceEstimate" class="table-of-contents__link toc-highlight">:ProduceEstimate</a></li><li><a href="#RemoveDuplicatesFromArray" class="table-of-contents__link toc-highlight">:RemoveDuplicatesFromArray</a></li><li><a href="#SolvePolynomial" class="table-of-contents__link toc-highlight">:SolvePolynomial</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2022 leoyulee. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+<script src="/Roblox-Ballistics-Functions/assets/js/runtime~main.b4554b66.js"></script>
+<script src="/Roblox-Ballistics-Functions/assets/js/main.1fffa04e.js"></script>
+</body>
+</html>
