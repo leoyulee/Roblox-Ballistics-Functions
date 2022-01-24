@@ -362,7 +362,7 @@ end
     A function that returns the derivative of a polynomial, given its coefficients.
     
     @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
-    @return ... -- The coefficients of the derviative polynomial from the initial polynomial.
+    @return ...number -- The coefficients of the derviative polynomial from the initial polynomial.
 ]=]
 function Utilities:ProduceDerivative(...:number): ...number
     local Coefficients: Array<number> = table.pack(...)
@@ -509,6 +509,14 @@ function Utilities:RemoveDuplicatesFromArray(InputArray: Array<any>): Array<any>
     end
     return output
 end
+--[=[
+    A function that finds and returns the values where a relative/absolute max/min occurs in the polynomial.
+    If the polynomial is a quartic or lower, it will use the general formula in SolvePolynomial.
+    Otherwise, it will perform the bisection method via ProduceEstimate.
+    
+    @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
+    @return ...number -- The critical points of the given polynomial.
+]=]
 function Utilities:ProduceCriticalPoints(...:number): ...number
     print("Produce Critical Points for",...)
     local Coefficients: Array<number> = table.pack(...)
