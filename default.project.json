@@ -4,9 +4,7 @@
     "$className": "DataModel",
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
-      "Common": {
-        "$path": "src"
-      }
+      "$path": "src"
     },
     "Workspace": {
       "$className": "Workspace",
