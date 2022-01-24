@@ -621,7 +621,7 @@ end
     @param TargetVelocity -- The (initial) velocity of the target.
     @param TargetAcceleration -- The (initial) velocity of the target.
     @param TargetJerk -- The jerk (rate of change of acceleration) of the target.
-    @return LookVector?, AverageHitPosition?, PositionAccuracy?, SimulatedHitPosition?, ProjectedHitPosition? -- The LookVector, AverageHitPosition, PositionAccuracy, SimulatedHitPosition, ProjectedHitPosition. Returns nil if there isn't a valid hit direction.
+    @return LookVector?, AverageHitPosition?, PositionAccuracy?, SimulatedHitPosition?, ProjectedHitPosition? -- Returns nil if there isn't a valid hit direction.
 ]=]
 local function ReturnHitInfo(results: Array<number>, ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, ShooterJerk: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?, TargetJerk: Vector3?): (Vector3, Vector3, number, Vector3, Vector3)
     if #results > 0 then
@@ -664,10 +664,36 @@ local function ReturnHitInfo(results: Array<number>, ProjectileSpeed: number, Sh
         return nil
     end
 end
+--[=[
+    A function that computes the LookVector and HitPosition from ProjectileSpeed, Positions, Velocities, and Acceleration. Refer to GetHitInfoWithJerk to compute with Jerk.
+    
+    @param ProjectileSpeed -- The initial speed of the projectile.
+    @param ShooterPosition -- The (initial) position of the projectile/shooter.
+    @param ShooterVelocity -- The (initial) velocity of the projectile/shooter.
+    @param ShooterAcceleration -- The (initial) acceleration of the projectile/shooter.
+    @param TargetPosition -- The (initial) position of the target.
+    @param TargetVelocity -- The (initial) velocity of the target.
+    @param TargetAcceleration -- The (initial) velocity of the target.
+    @return LookVector?, AverageHitPosition?, PositionAccuracy?, SimulatedHitPosition?, ProjectedHitPosition? -- Returns nil if there isn't a valid hit direction.
+]=]
 function BallisticsFunctions:GetHitInfo(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?): (Vector3, Vector3, number, Vector3, Vector3)
     local results = table.pack(self:GetHitTimes(ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, TargetPosition, TargetVelocity, TargetAcceleration))
     return ReturnHitInfo(results, ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, nil, TargetPosition, TargetVelocity, TargetAcceleration, nil)
 end
+--[=[
+    A function that computes the LookVector and HitPosition from ProjectileSpeed, Positions, Velocities, Acceleration, and Jerk.
+    
+    @param ProjectileSpeed -- The initial speed of the projectile.
+    @param ShooterPosition -- The (initial) position of the projectile/shooter.
+    @param ShooterVelocity -- The (initial) velocity of the projectile/shooter.
+    @param ShooterAcceleration -- The (initial) acceleration of the projectile/shooter.
+    @param ShooterJerk -- The jerk (rate of change of acceleration) of the projectile/shooter.
+    @param TargetPosition -- The (initial) position of the target.
+    @param TargetVelocity -- The (initial) velocity of the target.
+    @param TargetAcceleration -- The (initial) velocity of the target.
+    @param TargetJerk -- The jerk (rate of change of acceleration) of the target.
+    @return LookVector?, AverageHitPosition?, PositionAccuracy?, SimulatedHitPosition?, ProjectedHitPosition? -- Returns nil if there isn't a valid hit direction.
+]=]
 function BallisticsFunctions:GetHitInfoWithJerk(ProjectileSpeed: number, ShooterPosition: Vector3, ShooterVelocity: Vector3?, ShooterAcceleration: Vector3?, ShooterJerk: Vector3?, TargetPosition: Vector3, TargetVelocity: Vector3?, TargetAcceleration: Vector3?, TargetJerk: Vector3?): (Vector3, Vector3, number, Vector3, Vector3)
     local results = table.pack(self:GetHitTimesWithJerk(ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, ShooterJerk, TargetPosition, TargetVelocity, TargetAcceleration, TargetJerk))
     return ReturnHitInfo(results, ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, ShooterJerk, TargetPosition, TargetVelocity, TargetAcceleration, TargetJerk)
