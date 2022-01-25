@@ -590,6 +590,7 @@ end
 ]=]
 --[=[
     @prop Utilities BallisticUtilities
+    @private
     @within BallisticsFunctions
     The BallisticUtilities class of which contains all of the nessessary functions used to create the right data.
 ]=]
