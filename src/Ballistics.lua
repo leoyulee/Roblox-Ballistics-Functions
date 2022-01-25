@@ -1,17 +1,19 @@
---[=[
-    @class BallisticUtilities
+--[[
+    class BallisticUtilities
 
     The class that contains the internal processing functions to produce the right numbers for the BallisticsFunctions class. This can be accessed through BallisticsFunctions via BallisticsFunctions.Utilities.
-]=]
+]]
 --[=[
     @prop Precision number
-    @within BallisticUtilities
-    The target precision used to compare numbers and measure simularity in [BallisticUtilities:CompareNumbers]. Set to 1e-3 (or 0.001) by default.
+    @within BallisticsFunctions
+    @private
+    The target precision used to compare numbers and measure simularity in [BallisticsFunctions:CompareNumbers]. Set to 1e-3 (or 0.001) by default.
 ]=]
 --[=[
     @prop MaxNumber number
-    @within BallisticUtilities
-    The MaxNumber used to replace infinity (or math.huge) during [BallisticUtilities:ProduceEstimate]. Set to 2147483646 by default.
+    @within BallisticsFunctions
+    @private
+    The MaxNumber used to replace infinity (or math.huge) during [BallisticsFunctions:ProduceEstimate]. Set to 2147483646 by default.
 ]=]
 local BallisticUtilities = {
     Precision = 1e-3;
@@ -21,6 +23,8 @@ local BallisticUtilities = {
     BallisticUtilities = setmetatable(BallisticUtilities,BallisticUtilities)
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A function that returns the values of coefficients required to identify the polynomials of an equation
     and find the solutions to said polynomials.
     
@@ -81,6 +85,8 @@ function BallisticUtilities:ProduceCoefficients(ProjectileSpeed: number, DeltaPo
     return T0
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A workaround function to address how odd roots of a negative returns NaN when they should be returning a negative odd-rooted number.
     
     @param n -- The number of which the root will be applied to (n^root).
@@ -101,6 +107,8 @@ function BallisticUtilities:GetRoot(n: number, root: number?): number
     end
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A function that solves a polynomial given its coefficients up to the fourth power (T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0).
     
     @param T0 -- The first coefficient of the polynomial. T0 in T0 + T1x + T2x^2 + T3x^3 + T4x^4 = 0
@@ -339,6 +347,8 @@ function BallisticUtilities:SolvePolynomial(T0: number, T1: number, T2: number, 
     return output1,output2,output3,output4
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A short function that finds the overall vector between two Vector3s (Final Vector - Initial Vector).
     
     @param Target -- The vector3 of the target. By default Vector3.new(0,0,0).
@@ -353,6 +363,8 @@ function BallisticUtilities:ProduceDeltas(Target: Vector3?, Shooter: Vector3?): 
     end
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A function that returns the derivative of a polynomial, given its coefficients.
     
     @param ... -- The coefficients of the polynomial. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
@@ -369,6 +381,8 @@ function BallisticUtilities:ProduceDerivative(...:number): ...number
     return table.unpack(NewCoefficients)
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A function that returns the result of pluging in Input into a polynomial, given its coefficients. It can also evaluate the limit of positive and negative math.huge (infinity) if the Input is set to be that.
     
     @param Input -- The number that will be put into the given polynomial. Can be math.huge (infinity).
@@ -397,6 +411,8 @@ function BallisticUtilities:InputPolynomial(Input: number, ...:number): number
     return Sum
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A function that returnsif two numbers are within a given range of precision.
     
     @param N1 -- The first number.
@@ -414,6 +430,8 @@ function BallisticUtilities:CompareNumbers(N1: number, N2: number, Precision: nu
     return (N1L <= N2 and N2 <= N1G)
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A function that recursively calls itself to figure out where inbetween Point1 and Point2 it equals 0 within the range of [BallisticUtilities.Precision]. It performs the Bisection method to do this. If either point is equal to math.huge (infinity), it will replace it with [BallisticUtilities.MaxNumber].
     
     @param Point1 -- One critical point of which should be a min/max.
@@ -488,6 +506,8 @@ function BallisticUtilities:ProduceEstimate(Point1: number, Point2: number, ...:
     end
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A function that creates a new array which only contains unique values.
     
     @param InputArray -- The array of which should be pruned of duplicates.
@@ -504,6 +524,8 @@ function BallisticUtilities:RemoveDuplicatesFromArray(InputArray: Array<any>): A
     return output
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A function that finds and returns the values where a relative/absolute max/min occurs in the polynomial.
     If the polynomial is a quartic or lower, it will use the general formula in SolvePolynomial.
     Otherwise, it will perform the bisection method via ProduceEstimate.
@@ -542,6 +564,8 @@ function BallisticUtilities:ProduceCriticalPoints(...:number): ...number
     return table.unpack(CriticalPoints,1,#CriticalPoints)
 end
 --[=[
+    @within BallisticsFunctions
+    @private
     A function that finds and returns the solutions to the inputted polynomial which doesn't have a general formula with critical points and the bisection method.
     
     @param ... -- The coefficients of the polynomial that needs to be solved. T0, T1, T2, T3, T4, ..., Tn, where: T0 + T1x + T2x^2 + T3x^3 + T4x^4 + ... + Tn^n = 0
