@@ -684,6 +684,7 @@ local function ReturnHitInfo(results: Array<number>, ProjectileSpeed: number, Sh
     end
 end
 --[=[
+    @since v0.2.1
     @tag Untested
     A function that computes the LookVector and HitPosition from ProjectileSpeed, Positions, Velocities, and Acceleration. Refer to [BallisticsFunctions:GetHitInfoWithJerk] to compute with Jerk.
     
@@ -701,6 +702,7 @@ function BallisticsFunctions:GetHitInfo(ProjectileSpeed: number, ShooterPosition
     return ReturnHitInfo(results, ProjectileSpeed, ShooterPosition, ShooterVelocity, ShooterAcceleration, nil, TargetPosition, TargetVelocity, TargetAcceleration, nil)
 end
 --[=[
+    @since v0.2.1
     @tag Untested
     A function that computes the LookVector and HitPosition from ProjectileSpeed, Positions, Velocities, Acceleration, and Jerk.
     
@@ -742,6 +744,7 @@ end
 ]]
 
 --[=[
+    @since v0.2.0
     A function that computes the times of collision from ProjectileSpeed, Positions, Velocities, and Acceleration. Refer to [BallisticsFunctions:GetHitTimesWithJerk] to compute with Jerk.
     
     @param ProjectileSpeed -- The initial speed of the projectile.
@@ -770,6 +773,7 @@ function BallisticsFunctions:GetHitTimes(ProjectileSpeed: number, ShooterPositio
     return table.unpack(output)
 end
 --[=[
+    @since v0.2.0
     A function that computes the times of collision from ProjectileSpeed, Positions, Velocities, Acceleration, and Jerk.
     
     @param ProjectileSpeed -- The initial speed of the projectile.
